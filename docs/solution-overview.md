@@ -2,40 +2,71 @@
 
 ## What We Built
 
-[Describe your solution in plain language. Avoid jargon — write as if explaining to a smart colleague unfamiliar with your tech stack.]
+NEXORA is a decision-support platform for power-grid operations that turns raw equipment and operating data into early warnings and maintenance insights.
+
+Instead of requiring operators to inspect individual measurements and determine the significance of every change themselves, NEXORA brings the information together and evaluates the condition of the grid as a whole. The platform identifies unusual behavior, estimates the likelihood of disruptive events, ranks assets by risk, and presents the findings through an operator-friendly dashboard.
+
+The system is designed around a simple principle:
+
+> **Convert changing grid conditions into understandable risk signals and practical next actions.**
 
 ## How It Works
 
-[Explain the core mechanism step by step. A numbered list or simple flow works well here.]
+1. **Capture operating conditions**  
+   NEXORA receives measurements and asset information representing the current state of the electrical network. For the proof of concept, this can include simulated live readings.
 
-1. [Step 1: e.g., "User connects their GitHub repository via OAuth"]
-2. [Step 2: e.g., "The system ingests pipeline logs and feeds them to watsonx.ai"]
-3. [Step 3: e.g., "An anomaly score is computed and displayed on the dashboard"]
-4. [Step 4: e.g., "Alerts are sent to Slack when the score exceeds a threshold"]
+2. **Prepare the incoming data**  
+   Measurements are checked, organized, and transformed into a consistent format suitable for downstream analysis.
+
+3. **Establish normal behavior**  
+   The analytics layer examines the available data to distinguish expected operating patterns from unusual behavior.
+
+4. **Identify emerging irregularities**  
+   Sudden or sustained deviations in parameters such as load, voltage, temperature, current, frequency, or vibration are flagged for further evaluation.
+
+5. **Estimate operational risk**  
+   Predictive models use the observed conditions and relevant historical information to calculate the likelihood of an outage or equipment-related failure.
+
+6. **Prioritize assets**  
+   Risk estimates are translated into health indicators and severity levels so that high-priority assets can be identified quickly.
+
+7. **Generate operator guidance**  
+   The advisory layer interprets the detected condition, highlights the most relevant contributing factors, and suggests preventive measures.
+
+8. **Present the result**  
+   The dashboard brings together status indicators, trends, alerts, asset rankings, and recommendations in one interface for easier operational review.
 
 ## Architecture Diagram
 
-> See [`architecture.md`](architecture.md) for the detailed diagram.
+> See [`architecture.md`](architecture.md) for the detailed technical architecture.
 
-[Optionally include a simple ASCII or Mermaid diagram here for quick reference.]
-
-```
-[User] → [Frontend: React] → [API: FastAPI] → [watsonx.ai] → [Dashboard]
-                                    ↓
-                             [PostgreSQL DB]
-```
-
-## Key Design Decisions
-
-| Decision | Rationale |
-|---|---|
-| [e.g., Used watsonx.ai for anomaly detection] | [e.g., Pre-trained models reduced time-to-value vs. building from scratch] |
-| [Decision 2] | [Rationale 2] |
-| [Decision 3] | [Rationale 3] |
-
-## IBM Technologies Used
-
-[Explain specifically HOW you used each IBM technology — not just that you used it.]
-
-- **[IBM Tech 1, e.g., watsonx.ai]:** [How it was used — e.g., "Used the `ibm/granite-13b-instruct-v2` model via the Python SDK to classify anomaly types from log text."]
-- **[IBM Tech 2]:** [How it was used]
+```text
+        ┌──────────────────────────────┐
+        │ Grid & Equipment Information │
+        │ Sensors / History / Weather  │
+        └──────────────┬───────────────┘
+                       ↓
+              ┌─────────────────┐
+              │ Data Preparation│
+              └────────┬────────┘
+                       ↓
+              ┌─────────────────┐
+              │ Analytics Layer │
+              │                 │
+              │ • Anomaly Check │
+              │ • Risk Models   │
+              │ • Health Scoring│
+              └────────┬────────┘
+                       ↓
+              ┌─────────────────┐
+              │ Advisory Engine │
+              └────────┬────────┘
+                       ↓
+              ┌─────────────────┐
+              │ Operator Portal │
+              │                 │
+              │ Status          │
+              │ Trends          │
+              │ Alerts          │
+              │ Recommendations │
+              └─────────────────┘
