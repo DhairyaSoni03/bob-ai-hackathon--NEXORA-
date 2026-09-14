@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "cd src/frontend/nexora && npm install && npm run build",
+  "outputDirectory": "src/frontend/nexora/dist",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
