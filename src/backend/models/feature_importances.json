@@ -1,0 +1,22 @@
+{
+  "equipment": {
+    "load_pct": 0.07930746898310904,
+    "temperature_c": 0.12974986877209868,
+    "voltage_pu": 0.009530081385024973,
+    "current_pu": 0.1040740332526546,
+    "vibration_mm_s": 0.2368726134063406,
+    "oil_temp_c": 0.11093316741292984,
+    "age_years": 0.012020250114366905,
+    "last_maint_days": 0.3044312963392795,
+    "fault_history": 0.013081220334195775
+  },
+  "outage": {
+    "grid_load_pct": 0.2622805835585187,
+    "voltage_deviation": 0.305125988833307,
+    "frequency_deviation": 0.24337670341428516,
+    "high_risk_assets": 0.08735085282454338,
+    "active_faults": 0.044685472916835466,
+    "weather_severity": 0.05518455235711209,
+    "peak_hour": 0.0019958460953983974
+  }
+}

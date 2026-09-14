@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXORA — AI-Powered Power Grid Intelligence</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ================================================================
+     TOP NAVIGATION
+================================================================ -->
+<header class="top-bar">
+  <div class="top-bar__brand">
+    <span class="top-bar__logo">⚡</span>
+    <span class="top-bar__name">NEXORA</span>
+    <span class="top-bar__tagline">AI-Powered Power Grid Intelligence</span>
+  </div>
+  <div class="top-bar__right">
+    <span class="live-badge" id="liveBadge">● LIVE</span>
+    <span class="tick-counter" id="tickCounter">Tick: —</span>
+  </div>
+</header>
+
+<!-- ================================================================
+     SCENARIO CONTROLS (top banner)
+================================================================ -->
+<div class="scenario-bar">
+  <span class="scenario-bar__label">Demo Scenario:</span>
+  <button class="btn btn--warning" id="btnStartScenario" onclick="startScenario()">
+    ▶ Trigger Degrading Conditions (T-201 + F-201)
+  </button>
+  <button class="btn btn--success" id="btnStopScenario" onclick="stopScenario()" style="display:none">
+    ■ Reset to Normal
+  </button>
+  <span class="scenario-status" id="scenarioStatus"></span>
+</div>
+
+<!-- ================================================================
+     MAIN LAYOUT
+================================================================ -->
+<main class="dashboard">
+
+  <!-- ── ROW 1: KPI CARDS ──────────────────────────────────────── -->
+  <section class="kpi-row">
+
+    <div class="kpi-card kpi-card--health" id="kpiHealth">
+      <div class="kpi-card__label">Grid Health Score</div>
+      <div class="kpi-card__value" id="kpiHealthValue">—</div>
+      <div class="kpi-card__sub">Overall system condition</div>
+    </div>
+
+    <div class="kpi-card kpi-card--risk" id="kpiOutage">
+      <div class="kpi-card__label">Outage Risk</div>
+      <div class="kpi-card__value" id="kpiOutageValue">—</div>
+      <div class="kpi-card__sub" id="kpiOutageSub">—</div>
+    </div>
+
+    <div class="kpi-card kpi-card--alert" id="kpiHighRisk">
+      <div class="kpi-card__label">High-Risk Assets</div>
+      <div class="kpi-card__value" id="kpiHighRiskValue">—</div>
+      <div class="kpi-card__sub" id="kpiHighRiskSub">—</div>
+    </div>
+
+    <div class="kpi-card" id="kpiAlerts">
+      <div class="kpi-card__label">Active Alerts</div>
+      <div class="kpi-card__value" id="kpiAlertsValue">—</div>
+      <div class="kpi-card__sub" id="kpiAlertsSub">—</div>
+    </div>
+
+  </section>
+
+  <!-- ── ROW 2: EQUIPMENT TABLE + GRID VISUALISATION ──────────── -->
+  <section class="mid-row">
+
+    <!-- Equipment list -->
+    <div class="panel panel--equipment">
+      <div class="panel__header">
+        <span>Equipment Status</span>
+        <div class="panel__filters">
+          <select id="filterType" onchange="filterEquipment()">
+            <option value="">All Types</option>
+            <option value="transformer">Transformers</option>
+            <option value="feeder">Feeders</option>
+            <option value="substation">Substations</option>
+          </select>
+          <select id="filterStatus" onchange="filterEquipment()">
+            <option value="">All Status</option>
+            <option value="normal">Normal</option>
+            <option value="warning">Warning</option>
+            <option value="critical">Critical</option>
+          </select>
+        </div>
+      </div>
+      <div class="equipment-table-wrap">
+        <table class="equipment-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Type</th>
+              <th>Substation</th>
+              <th>Health</th>
+              <th>Fail Risk</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="equipmentTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Grid visualisation -->
+    <div class="panel panel--grid-viz">
+      <div class="panel__header">Grid Topology</div>
+      <div class="grid-viz" id="gridViz"></div>
+    </div>
+
+  </section>
+
+  <!-- ── ROW 3: AI FAILURE ADVISOR (prominent standalone) ─────── -->
+  <section class="ai-advisor-row" id="aiAdvisorRow">
+    <div class="panel panel--ai-advisor" id="aiAdvisorPanel">
+      <div class="panel__header ai-advisor-header" id="aiAdvisorHeader">
+        <span class="ai-advisor-title">⚡ AI Failure Advisor</span>
+        <span class="ai-advisor-asset-tag" id="aiAdvisorAssetTag"></span>
+      </div>
+      <div class="ai-advisor-body" id="aiAdvisorBody">
+        <p class="advisory-empty">Loading advisor…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ROW 4: DETAIL PANEL (shown on selection) ─────────────── -->
+  <section class="detail-row" id="detailRow" style="display:none">
+
+    <!-- Sensor readings -->
+    <div class="panel panel--sensors">
+      <div class="panel__header" id="detailTitle">Equipment Detail</div>
+      <div class="sensor-grid" id="sensorGrid"></div>
+    </div>
+
+    <!-- Trend charts -->
+    <div class="panel panel--trends">
+      <div class="panel__header">Historical Trends</div>
+      <div class="charts-wrap">
+        <div class="chart-block">
+          <div class="chart-title">Load %</div>
+          <canvas id="chartLoad" height="90"></canvas>
+        </div>
+        <div class="chart-block">
+          <div class="chart-title">Temperature (°C)</div>
+          <canvas id="chartTemp" height="90"></canvas>
+        </div>
+        <div class="chart-block">
+          <div class="chart-title">Voltage (pu)</div>
+          <canvas id="chartVoltage" height="90"></canvas>
+        </div>
+        <div class="chart-block">
+          <div class="chart-title">Health Score</div>
+          <canvas id="chartHealth" height="90"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legacy AI Advisory (compact, inside detail row) -->
+    <div class="panel panel--advisory">
+      <div class="panel__header">⚡ AI Advisory</div>
+      <div class="advisory-body" id="advisoryBody">
+        <p class="advisory-empty">Select an equipment asset to view AI-powered analysis and recommendations.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── ROW 5: ALERTS FEED ─────────────────────────────────────── -->
+  <section class="alerts-row">
+    <div class="panel panel--alerts">
+      <div class="panel__header">Active Alerts</div>
+      <div class="alerts-list" id="alertsList">
+        <p class="advisory-empty">No active alerts.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer class="app-footer">
+  <span>NEXORA — IBM BoB AI Innovation Hackathon 2026 · Team NEXORA</span>
+  <span class="footer-disclaimer">⚠ All sensor data is simulated for demonstration purposes.</span>
+</footer>
+
+<!-- Lightweight canvas-based sparkline charts (no external deps) -->
+<script src="charts.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
