@@ -24,22 +24,23 @@ submission:
     transformers, substations, and feeders, where unexpected failures and
     power outages can cause service interruptions, equipment damage, increased
     maintenance costs, and reduced grid reliability. Grid operators need an
-    intelligent way to identify abnormal conditions early, predict potential
-    outages and equipment failures, and support timely preventive action.
+    intelligent way to identify abnormal conditions early, estimate potential
+    outage and equipment-failure risk, understand the factors contributing to
+    that risk, and support timely preventive action.
 
   solution_summary: >
-    NEXORA is an AI-powered grid intelligence solution designed to analyze
-    grid and equipment data, detect abnormal operating conditions, predict
-    power outages and equipment failures, assess grid and equipment health,
-    and provide actionable recommendations to support proactive maintenance
-    and outage management.
+    NEXORA is an AI-powered grid intelligence solution that analyzes simulated
+    grid and equipment operating data, detects abnormal conditions, estimates
+    power outage and equipment-failure risk, evaluates grid and equipment
+    health, generates alerts, and provides asset-specific explanations and
+    preventive recommendations through an interactive web dashboard.
 
   key_features:
-    - "Power outage prediction based on grid operating conditions and historical patterns"
-    - "Grid equipment failure prediction for transformers, substations, feeders, and other assets"
-    - "Anomaly detection across voltage, current, load, temperature, frequency, vibration, and environmental conditions"
-    - "Grid and equipment health scoring with risk-based alerts and historical trends"
-    - "AI-powered failure advisory with risk explanations and preventive-maintenance recommendations"
+    - "Power outage risk estimation based on current grid operating conditions"
+    - "Equipment failure-risk prediction for transformers, substations, and feeders"
+    - "Anomaly detection across operating measurements including load, voltage, current, temperature, oil temperature, and vibration"
+    - "Grid and equipment health scoring with risk classification, active alerts, and historical trends"
+    - "AI Failure Advisor providing asset-specific risk explanations, estimated risk windows, and preventive-maintenance recommendations"
 
   tech_stack:
     languages:
@@ -47,29 +48,43 @@ submission:
       - "JavaScript"
     frameworks:
       - "FastAPI"
-    ibm_technologies: []
+    ibm_technologies:
+      - "IBM Bob IDE"
     databases: []
     other:
+      - "Scikit-learn"
+      - "Pandas"
+      - "NumPy"
+      - "HTML"
+      - "CSS"
+      - "Git"
       - "GitHub"
       - "GitHub Actions"
 
   what_we_are_most_proud_of: >
-    NEXORA combines prediction, anomaly detection, health assessment, risk
-    alerts, explanations, and actionable recommendations into a single
-    workflow designed to help operators identify emerging grid risks and
-    take preventive action before failures develop into major outages.
+    NEXORA brings monitoring, anomaly detection, risk estimation, health
+    assessment, alerting, explanation, and preventive guidance together in one
+    operator-focused workflow. The strongest part of the prototype is the
+    dynamic AI Failure Advisor, which responds to the selected asset's current
+    condition and provides the contributing factors, estimated risk window,
+    trend information, and recommended actions needed for preventive
+    decision-making.
 
   known_limitations: >
-    The initial proof of concept may use simulated or synthetic grid and
-    sensor data where real-time utility data is unavailable. Prediction
-    quality will depend on the available training data, and estimated
-    failure windows are risk estimates rather than guaranteed failure times.
-    IBM-specific technologies will be added once they are actually integrated
-    and tested in the project.
+    The current proof of concept uses simulated or synthetic grid and sensor
+    data rather than live utility telemetry. Application state and recent
+    history are maintained in memory, so restarting the backend resets the
+    runtime state. Prediction quality depends on the available training data,
+    and estimated failure windows are risk estimates rather than guaranteed
+    failure times. The current implementation does not yet use external
+    watsonx.ai services or a persistent production database. IBM Bob IDE was
+    used as the primary AI development environment for building and refining
+    the application.
 
 # =============================================================================
 # ARTIFACT LOCATIONS
 # =============================================================================
+
 artifacts:
   source_code: "src/"
   setup_guide: "docs/setup-guide.md"
