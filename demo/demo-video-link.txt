@@ -1,15 +1,17 @@
-https://youtu.be/your-demo-video-link-here
+﻿https://youtu.be/nexora-demo-pending
 
-Replace the URL above with a link to your demo video.
+NEXORA - AI-Powered Power Grid Intelligence
+Team: NEXORA (Meet Tanti, Kush Patel, Dhairya Soni, Aahan Soni)
+IBM Bob AI Hackathon 2026
 
-Accepted platforms:
-  - YouTube (public or unlisted)
-  - Loom (https://www.loom.com/share/...)
-  - IBM Box (https://ibm.box.com/s/...)
-  - Google Drive (set to "Anyone with the link can view")
+Demo video to be recorded after final testing.
+Replace this URL with the actual YouTube/Loom link before final submission.
 
-Video requirements:
-  - Length: 3–5 minutes maximum
-  - Must show the application running (not just slides)
-  - Should walk through at least one key feature end-to-end
-  - Audio narration strongly recommended
+Application demo covers:
+1. Command Center - grid health KPIs and critical alerts
+2. TX-047 critical asset - sensor anomalies and failure risk
+3. AI Failure Advisor - IBM watsonx.ai risk explanation
+4. Maintenance Planner - crew pre-positioning for TX-047
+5. Grid Map - substation topology and risk visualization
+6. Outage Prediction - contribution breakdown
+7. Weather Intelligence - storm impact on assets

@@ -1,60 +1,49 @@
-# Architecture
+﻿# Architecture — NEXORA AI-Powered Power Grid Intelligence
 
 ## System Architecture
 
-NEXORA uses a layered web-application architecture that takes grid and equipment measurements, prepares them for analysis, evaluates operational conditions through AI/ML models, converts the results into risk and health indicators, and presents the findings through an interactive operator dashboard.
-
-The current proof of concept uses simulated sensor data so the complete monitoring, prediction, alerting, and advisory workflow can be demonstrated without requiring access to a live utility network.
+[Describe the overall architecture of your system. Replace the Mermaid diagram below with your actual architecture.]
 
 ```mermaid
 graph TD
-    A["Simulated Grid and Equipment Data"] --> B["Data Ingestion and Simulation"]
-    B --> C["Data Processing and Feature Preparation"]
-    C --> D["AI and ML Analysis"]
+    A[User / Browser] -->|HTTP| B[Frontend - React]
+    B -->|REST API| C[Backend - FastAPI]
+    C -->|SDK| D[watsonx.ai]
+    C -->|Query| E[PostgreSQL]
+    C -->|Publish| F[Slack Webhook]
+    D -->|Inference Result| C
+```
 
-    D --> D1["Outage Risk Prediction"]
-    D --> D2["Equipment Failure Risk Prediction"]
-    D --> D3["Anomaly Detection"]
+## Components
 
-    D1 --> E["Risk Assessment"]
-    D2 --> E
-    D3 --> E
+| Component | Technology | Responsibility |
+|---|---|---|
+| Frontend | [e.g., React 18] | [e.g., Dashboard UI, user interaction] |
+| Backend API | [e.g., FastAPI] | [e.g., Business logic, orchestration] |
+| AI / ML | [e.g., watsonx.ai] | [e.g., Anomaly scoring, classification] |
+| Database | [e.g., PostgreSQL] | [e.g., Storing pipeline events and scores] |
+| Notifications | [e.g., Slack API] | [e.g., Alerting on threshold breaches] |
 
-    E --> E1["Outage Risk"]
-    E --> E2["Failure Risk"]
-    E --> E3["Grid Health Score"]
-    E --> E4["Equipment Health Score"]
-    E --> E5["Risk Classification"]
+## Data Flow
 
-    E --> F["AI Failure Advisor"]
+[Describe how data moves through your system from input to output.]
 
-    F --> F1["Risk Explanation"]
-    F --> F2["Contributing Factors"]
-    F --> F3["Estimated Risk Window"]
-    F --> F4["Preventive Recommendations"]
+1. [e.g., Pipeline logs are ingested via a webhook from GitHub Actions]
+2. [e.g., Logs are preprocessed and chunked into 512-token segments]
+3. [e.g., Each chunk is sent to the watsonx.ai inference endpoint]
+4. [e.g., Anomaly scores are stored in PostgreSQL]
+5. [e.g., The React dashboard polls the API every 30 seconds to refresh]
 
-    B --> G["In-Memory Application State"]
-    E --> G
-    F --> G
+## Security Considerations
 
-    G --> H["FastAPI Backend"]
+[Note any security decisions relevant to the architecture — even if basic.]
 
-    H --> H1["Grid API"]
-    H --> H2["Equipment API"]
-    H --> H3["Equipment Detail API"]
-    H --> H4["Alerts API"]
-    H --> H5["Advisor API"]
-    H --> H6["Scenario Start API"]
-    H --> H7["Scenario Stop API"]
+- [e.g., API keys stored in environment variables, never committed to git]
+- [e.g., All API routes require a Bearer token]
+- [e.g., Database credentials rotated via IBM Secrets Manager]
 
-    H --> I["Web Frontend"]
+## Scalability Notes
 
-    I --> I1["Grid Overview"]
-    I --> I2["Equipment Monitoring"]
-    I --> I3["Grid Topology"]
-    I --> I4["Active Alerts"]
-    I --> I5["Historical Trends"]
-    I --> I6["AI Failure Advisor"]
-    I --> I7["AI Advisory Details"]
+[Optional: how would this scale beyond the hackathon prototype?]
 
-    I --> J["Grid Operator"]
+[e.g., "The FastAPI backend is stateless and could be horizontally scaled behind a load balancer. The watsonx.ai calls are the bottleneck and would benefit from request batching."]

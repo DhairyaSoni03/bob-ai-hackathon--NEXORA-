@@ -1,122 +1,145 @@
-# 🚀 NEXORA — AI-Powered Power Grid Intelligence
+﻿# NEXORA - AI-Powered Power Grid Intelligence
 
 > **Predict before failure. Act before outage.**
 
-NEXORA is an AI-powered solution for **Power Outage Prediction & Grid Equipment Failure Advisory**. It is designed to help grid operators identify potential power outages, detect abnormal equipment behavior, assess grid and equipment health, and receive actionable recommendations for preventive action.
+NEXORA is a full-stack AI-powered grid intelligence decision-support platform for the **Power Outage Prediction & Grid Equipment Failure Advisor** challenge.
 
-* * *
+---
 
-## 👥 Team
+## Team
 
 | Field | Value |
-| --- | --- |
+|---|---|
 | Team Name | NEXORA |
 | Track | AI |
-| Team Lead | Meet Tanti — meett9668@gmail.com |
+| Team Lead | Meet Tanti - meett9668@gmail.com |
 | Members | Kush Patel, Dhairya Soni, Aahan Soni |
 
-* * *
+---
 
-## 🎯 Problem Statement
+## Problem Statement
 
-Power distribution networks depend on critical equipment such as transformers, substations, feeders, and other grid assets. Unexpected equipment failures and power outages can cause service interruptions, equipment damage, increased maintenance costs, longer restoration times, and reduced grid reliability.
+Power transformer and substation failures cause blackouts costing utilities $1M+/hour. Most utilities use calendar-based maintenance while sensors can show failure signatures weeks in advance. Weather events compound the risk, but sensor data and forecasts are rarely combined in time to act.
 
-Traditional maintenance can be reactive or based on fixed schedules, making it difficult to identify developing problems early enough for preventive action.
+---
 
-NEXORA addresses this challenge by analyzing grid and equipment data to identify abnormal operating conditions, predict potential power outages and equipment failures, and assist operators with timely and actionable recommendations.
+## Solution
 
-* * *
+NEXORA combines asset health sensor data, weather forecasts, and historical incident records to:
+- **Predict outage-prone areas** and at-risk equipment
+- **Rank assets by grid impact severity**
+- **Generate prioritised maintenance and crew pre-positioning plans**
+- **Explain risk** with IBM watsonx.ai or a transparent local advisory engine
 
-## 💡 Solution
+---
 
-NEXORA is an AI-powered grid intelligence platform designed to support **predictive maintenance and proactive outage management**.
+## Key Features
 
-The solution analyzes grid and equipment data such as voltage, current, load, frequency, temperature, vibration, equipment condition, historical events, maintenance information, and environmental conditions. It combines prediction, anomaly detection, health assessment, and intelligent advisory capabilities to provide operators with a clear view of current risks and recommended preventive actions.
+- 9-page professional utility operations control-room interface (React + TypeScript)
+- AI Failure Advisor: IBM watsonx.ai Granite 13B with transparent local fallback
+- Real-time sensor simulation with degradation scenarios for live demo
+- Transparent multi-factor risk engine: sensor + health + weather + historical + load + impact
+- Outage prediction with sensor / weather / historical contribution breakdown
+- Weather-to-asset risk integration showing per-asset weather delta
+- Prioritized maintenance plan with crew pre-positioning recommendations
+- Historical incident pattern matching
 
-* * *
+---
 
-## ✨ Key Features
+## Tech Stack
 
-* **Power Outage Prediction:** Estimates the likelihood of a potential power outage using grid conditions and historical patterns.
-* **Equipment Failure Prediction:** Identifies grid assets such as transformers, substations, and feeders that may be at increased risk of failure.
-* **Anomaly Detection:** Detects unusual changes in voltage, current, load, temperature, frequency, vibration, and other monitored parameters.
-* **Grid & Equipment Health Scoring:** Provides an overall grid health score and individual equipment health scores for easier prioritization.
-* **AI Failure Advisor:** Explains important risk factors and provides actionable preventive-maintenance recommendations.
-* **Real-Time / Simulated Monitoring:** Supports continuously changing sensor data for monitoring and demonstration.
-* **Risk Alerts:** Generates alerts when outage or equipment-failure risk reaches higher levels.
-* **Grid Visualization:** Provides a visual representation of substations and equipment with their current risk status.
-* **Historical Trends:** Tracks readings, predictions, failures, and alerts to help identify changes over time.
+| Layer | Technology |
+|---|---|
+| Frontend | React 18, TypeScript, Vite, Recharts, React Router |
+| Backend | FastAPI (Python 3.11), Uvicorn |
+| AI | IBM watsonx.ai (ibm/granite-13b-instruct-v2) + local fallback |
+| ML | Scikit-learn (RandomForestClassifier x2, IsolationForest) |
+| Data | Deterministic synthetic demo dataset |
 
-* * *
+---
 
-## 🛠️ Tech Stack
+## How to Run
 
-| Category | Technologies |
-| --- | --- |
-| Languages | Python, JavaScript, HTML, CSS |
-| Frameworks | FastAPI, Web-based frontend |
-| AI / ML | Scikit-learn, Pandas, NumPy, Anomaly Detection |
-| IBM Technologies | IBM technologies will be documented here once the specific services used by NEXORA are confirmed |
-| Databases | To be finalized based on implementation requirements |
-| Other | GitHub, GitHub Actions |
+```bash
+# 1. Clone the repository
+git clone https://github.com/meett9668-boop/bob-ai-hackathon--NEXORA-.git
+cd bob-ai-hackathon--NEXORA-
 
-* * *
+# 2. Install Python dependencies
+pip install -r src/backend/requirements.txt
 
-## 📁 Repository Structure
+# 3. Build the frontend
+cd src/frontend/nexora
+npm install
+npm run build
+cd ../../..
 
-    ├── src/                  # All source code
-    ├── docs/                 # Written documentation
-    │   ├── problem-statement.md
-    │   ├── solution-overview.md
-    │   ├── architecture.md
-    │   └── setup-guide.md
-    ├── demo/                 # Demo artifacts
-    │   ├── screenshots/      # App screenshots
-    │   └── demo-video-link.txt  # Link to demo video
-    ├── presentation/         # Slide deck
-    └── submission.yaml       # Structured submission metadata
+# 4. (Optional) Configure environment variables
+cp src/.env.example src/backend/.env
+# Edit src/backend/.env to add WATSONX_API_KEY and WATSONX_PROJECT_ID if available
 
-* * *
+# 5. Start the application
+cd src/backend
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
 
-## ⚡ How to Run
+The full application (API + frontend) is available at: **`http://localhost:8000`**
 
-> Final commands will be kept synchronized with `docs/setup-guide.md` as the project implementation is completed.
+For hot-reload frontend development:
+```bash
+cd src/frontend/nexora
+npm run dev   # http://localhost:5173
+```
 
-    # 1. Clone the repo
-    git clone https://github.com/meett9668-boop/bob-ai-hackathon--NEXORA-.git
-    cd bob-ai-hackathon--NEXORA-
+See `docs/setup-guide.md` for complete setup instructions.
 
-    # 2. Install dependencies
-    pip install -r requirements.txt
+---
 
-    # 3. Configure environment
-    cp .env.example .env
+## Repository Structure
 
-    # 4. Run the project
-    python app.py
+```
+src/                  # All source code
+  backend/            # FastAPI backend
+    main.py           # API endpoints (18+ routes)
+    data/             # Synthetic demo data module
+    advisor/          # IBM watsonx.ai + local advisory engine
+    ml/               # Scikit-learn ML models
+    simulator/        # Real-time sensor simulator
+  frontend/
+    nexora/           # React+TypeScript SPA
+      src/pages/      # 9 application pages
+      dist/           # Built frontend (served by backend)
+docs/                 # Written documentation
+demo/                 # Demo artifacts
+presentation/         # Slide deck
+submission.yaml       # Structured submission metadata
+```
 
-* * *
+---
 
-## 🖥️ Demo
+## Demo
 
 | Artifact | Link |
-| --- | --- |
-| 📹 Demo Video | See `demo/demo-video-link.txt` |
-| 🌐 Live Demo | To be added |
-| 🖼️ Screenshots | See `demo/screenshots/` |
-| 📊 Presentation | See `presentation/slides.pdf` |
+|---|---|
+| Demo Video | See `demo/demo-video-link.txt` |
+| Live Demo | See `demo/live-demo-url.txt` |
+| Screenshots | See `demo/screenshots/` |
+| Presentation | See `presentation/` |
 
-* * *
+---
 
-## ⚠️ Known Limitations
+## IBM Technology Integration
 
-* The initial proof of concept may use simulated or synthetic sensor data where live grid data is unavailable.
-* Prediction performance will depend on the quality, quantity, and representativeness of the available training data.
-* Estimated failure or risk windows are advisory predictions and should not be treated as guaranteed failure times.
-* IBM-specific services and integrations will be documented after the final implementation is confirmed.
+**IBM watsonx.ai (ibm/granite-13b-instruct-v2)** is integrated in the Failure Advisor:
+- When `WATSONX_API_KEY` and `WATSONX_PROJECT_ID` are set, the Failure Advisor sends structured asset + sensor + weather + incident context to IBM Granite for natural-language risk explanation.
+- When not configured, the local deterministic advisory engine runs transparently.
+- The UI clearly displays which provider is active.
 
-* * *
+---
 
-## 🏅 What We're Most Proud Of
+## Known Limitations
 
-NEXORA goes beyond simply predicting a possible outage or equipment failure. Our goal is to combine **prediction, anomaly detection, health assessment, explainability, and actionable recommendations** in a single solution that helps grid operators understand emerging risks and respond before they become major disruptions.
+- All sensor data, weather records, incidents, and predictions are **synthetic demo data** - not real utility data.
+- IBM watsonx.ai requires valid credentials; the system clearly labels when the local engine is used instead.
+- ML risk windows are probability estimates only - not guaranteed failure times.
+- The prototype uses in-memory state; production would use time-series and relational databases.
