@@ -1,17 +1,17 @@
-﻿https://youtu.be/nexora-demo-pending
+https://youtu.be/cTt_xOYFxTc
 
 NEXORA - AI-Powered Power Grid Intelligence
 Team: NEXORA (Meet Tanti, Kush Patel, Dhairya Soni, Aahan Soni)
 IBM Bob AI Hackathon 2026
 
-Demo video to be recorded after final testing.
-Replace this URL with the actual YouTube/Loom link before final submission.
+Demo video:
+https://youtu.be/cTt_xOYFxTc
 
 Application demo covers:
 1. Command Center - grid health KPIs and critical alerts
 2. TX-047 critical asset - sensor anomalies and failure risk
-3. AI Failure Advisor - IBM watsonx.ai risk explanation
-4. Maintenance Planner - crew pre-positioning for TX-047
+3. AI Failure Advisor - risk explanation
+4. Maintenance Planner - crew pre-positioning for critical assets
 5. Grid Map - substation topology and risk visualization
 6. Outage Prediction - contribution breakdown
 7. Weather Intelligence - storm impact on assets
