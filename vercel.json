@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "outputDirectory": "src/frontend",
+  "outputDirectory": ".",
   "buildCommand": "",
   "framework": null,
   "rewrites": [
