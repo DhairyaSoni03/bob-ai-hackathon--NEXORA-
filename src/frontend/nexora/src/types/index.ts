@@ -1,4 +1,4 @@
-﻿export interface Asset {
+export interface Asset {
   id: string;
   name: string;
   type: "transformer" | "substation" | "feeder";

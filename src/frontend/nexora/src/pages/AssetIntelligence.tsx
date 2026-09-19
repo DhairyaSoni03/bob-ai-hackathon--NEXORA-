@@ -1,8 +1,8 @@
-﻿import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { fetchAssets } from "../api/client";
 import axios from "axios";
-import { Asset } from "../types";
+import type { Asset } from "../types";
 import { HealthBar, StatusBadge, Table, TR, TD, Panel, Spinner, EmptyState, SyntheticBadge } from "../components/shared";
 import { PageHeader, Btn } from "../components/PageHeader";
 
@@ -10,7 +10,7 @@ function riskColor(p: number) {
   return p >= 0.65 ? "#ef4444" : p >= 0.45 ? "#f59e0b" : p >= 0.25 ? "#a78bfa" : "#4ade80";
 }
 
-// ── Add Asset Modal ──────────────────────────────────────────────────
+// -- Add Asset Modal --------------------------------------------------
 const EMPTY_FORM = {
   id: "", name: "", type: "transformer", substation: "", region: "",
   latitude: "29.76", longitude: "-95.36",
@@ -63,22 +63,22 @@ function AddAssetModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
   };
 
   const inputStyle: React.CSSProperties = {
-    width: "100%", background: "#111827", border: "1px solid #374151", borderRadius: 6,
-    padding: "7px 10px", color: "#f3f4f6", fontSize: "0.8rem",
+    width: "100%", background: "rgba(10,22,40,0.7)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 6,
+    padding: "7px 10px", color: "#e2e8f0", fontSize: "0.8rem",
   };
-  const labelStyle: React.CSSProperties = { fontSize: "0.7rem", color: "#9ca3af", marginBottom: 3, display: "block" };
+  const labelStyle: React.CSSProperties = { fontSize: "0.7rem", color: "#64748b", marginBottom: 3, display: "block" };
 
   return (
     <div style={{ position: "fixed", inset: 0, background: "#000000bb", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ background: "#0f172a", border: "1px solid #374151", borderRadius: 12, padding: 28, width: 580, maxHeight: "90vh", overflowY: "auto", boxShadow: "0 25px 60px #000a" }}>
+      <div style={{ background: "rgba(8,16,32,0.8)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 12, padding: 28, width: 580, maxHeight: "90vh", overflowY: "auto", boxShadow: "0 25px 60px #000a" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <h2 style={{ fontSize: "1rem", fontWeight: 800, color: "#f3f4f6" }}>➕ Add New Asset</h2>
-          <button onClick={onClose} style={{ background: "none", border: "none", color: "#6b7280", fontSize: "1.2rem", cursor: "pointer" }}>✕</button>
+          <h2 style={{ fontSize: "1rem", fontWeight: 800, color: "#e2e8f0" }}>? Add New Asset</h2>
+          <button onClick={onClose} style={{ background: "none", border: "none", color: "#475569", fontSize: "1.2rem", cursor: "pointer" }}>?</button>
         </div>
 
         {error && (
           <div style={{ background: "#450a0a", border: "1px solid #7f1d1d", borderRadius: 6, padding: "8px 12px", color: "#f87171", fontSize: "0.78rem", marginBottom: 14 }}>
-            ⚠ {error}
+            ? {error}
           </div>
         )}
 
@@ -116,16 +116,16 @@ function AddAssetModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
           </div>
           {/* Row 4 */}
           <div>
-            <label style={labelStyle}>Health Score (0–100)</label>
+            <label style={labelStyle}>Health Score (0�100)</label>
             <input style={inputStyle} type="number" min="0" max="100" value={form.health_score} onChange={e => set("health_score", e.target.value)} />
           </div>
           <div>
-            <label style={labelStyle}>Failure Probability (0–1)</label>
+            <label style={labelStyle}>Failure Probability (0�1)</label>
             <input style={inputStyle} type="number" min="0" max="1" step="0.01" value={form.failure_probability} onChange={e => set("failure_probability", e.target.value)} />
           </div>
           {/* Row 5 */}
           <div>
-            <label style={labelStyle}>Impact Score (0–100)</label>
+            <label style={labelStyle}>Impact Score (0�100)</label>
             <input style={inputStyle} type="number" min="0" max="100" value={form.impact_score} onChange={e => set("impact_score", e.target.value)} />
           </div>
           <div>
@@ -150,12 +150,12 @@ function AddAssetModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
             <label style={labelStyle}>Fault History (count)</label>
             <input style={inputStyle} type="number" min="0" value={form.fault_history} onChange={e => set("fault_history", e.target.value)} />
           </div>
-          {/* Row 8 — full width */}
+          {/* Row 8 � full width */}
           <div style={{ gridColumn: "1/-1" }}>
             <label style={labelStyle}>Critical Facilities (comma-separated, optional)</label>
             <input style={inputStyle} value={form.critical_facilities} onChange={e => set("critical_facilities", e.target.value)} placeholder="e.g. City Hospital, Water Plant #2" />
           </div>
-          {/* Row 9 — coords */}
+          {/* Row 9 � coords */}
           <div>
             <label style={labelStyle}>Latitude</label>
             <input style={inputStyle} type="number" step="0.0001" value={form.latitude} onChange={e => set("latitude", e.target.value)} />
@@ -167,14 +167,14 @@ function AddAssetModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
         </div>
 
         {/* Preview status */}
-        <div style={{ marginTop: 14, background: "#111827", borderRadius: 6, padding: "8px 12px", fontSize: "0.75rem", color: "#9ca3af" }}>
+        <div style={{ marginTop: 14, background: "rgba(10,22,40,0.7)", borderRadius: 6, padding: "8px 12px", fontSize: "0.75rem", color: "#64748b" }}>
           Derived status: <span style={{ fontWeight: 700, color: parseFloat(form.failure_probability) >= 0.65 ? "#f87171" : parseFloat(form.failure_probability) >= 0.35 ? "#fbbf24" : "#4ade80" }}>
             {parseFloat(form.failure_probability) >= 0.65 || parseFloat(form.health_score) < 45 ? "CRITICAL" : parseFloat(form.failure_probability) >= 0.35 || parseFloat(form.health_score) < 68 ? "WARNING" : "NORMAL"}
           </span>
         </div>
 
         <div style={{ display: "flex", gap: 10, marginTop: 20, justifyContent: "flex-end" }}>
-          <button onClick={onClose} style={{ background: "#1f2937", border: "1px solid #374151", borderRadius: 6, padding: "8px 18px", color: "#9ca3af", fontSize: "0.8rem", cursor: "pointer" }}>Cancel</button>
+          <button onClick={onClose} style={{ background: "rgba(30,41,59,0.7)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 6, padding: "8px 18px", color: "#64748b", fontSize: "0.8rem", cursor: "pointer" }}>Cancel</button>
           <button onClick={handleSubmit} disabled={saving}
             style={{ background: saving ? "#374151" : "#1d4ed8", border: "none", borderRadius: 6, padding: "8px 20px", color: "#fff", fontSize: "0.8rem", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer" }}>
             {saving ? "Saving..." : "Add Asset"}
@@ -185,7 +185,7 @@ function AddAssetModal({ onClose, onAdded }: { onClose: () => void; onAdded: () 
   );
 }
 
-// ── Delete Confirmation Modal ────────────────────────────────────────
+// -- Delete Confirmation Modal ----------------------------------------
 function DeleteConfirmModal({ asset, onClose, onDeleted }: { asset: Asset; onClose: () => void; onDeleted: () => void }) {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
@@ -204,17 +204,17 @@ function DeleteConfirmModal({ asset, onClose, onDeleted }: { asset: Asset; onClo
 
   return (
     <div style={{ position: "fixed", inset: 0, background: "#000000bb", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ background: "#0f172a", border: "1px solid #7f1d1d", borderRadius: 12, padding: 28, width: 420, boxShadow: "0 25px 60px #000a" }}>
-        <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#f87171", marginBottom: 10 }}>🗑 Remove Asset</div>
-        <p style={{ fontSize: "0.82rem", color: "#d1d5db", marginBottom: 8 }}>
-          Are you sure you want to remove <strong style={{ color: "#f3f4f6" }}>{asset.name}</strong> ({asset.id})?
+      <div style={{ background: "rgba(8,16,32,0.8)", border: "1px solid #7f1d1d", borderRadius: 12, padding: 28, width: 420, boxShadow: "0 25px 60px #000a" }}>
+        <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#f87171", marginBottom: 10 }}>?? Remove Asset</div>
+        <p style={{ fontSize: "0.82rem", color: "#cbd5e1", marginBottom: 8 }}>
+          Are you sure you want to remove <strong style={{ color: "#e2e8f0" }}>{asset.name}</strong> ({asset.id})?
         </p>
-        <p style={{ fontSize: "0.75rem", color: "#9ca3af", marginBottom: 16 }}>
+        <p style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: 16 }}>
           This will also remove all related alerts, predictions, and maintenance actions for this asset. This action cannot be undone in the current session.
         </p>
-        {error && <div style={{ color: "#f87171", fontSize: "0.78rem", marginBottom: 10 }}>⚠ {error}</div>}
+        {error && <div style={{ color: "#f87171", fontSize: "0.78rem", marginBottom: 10 }}>? {error}</div>}
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-          <button onClick={onClose} style={{ background: "#1f2937", border: "1px solid #374151", borderRadius: 6, padding: "8px 18px", color: "#9ca3af", fontSize: "0.8rem", cursor: "pointer" }}>Cancel</button>
+          <button onClick={onClose} style={{ background: "rgba(30,41,59,0.7)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 6, padding: "8px 18px", color: "#64748b", fontSize: "0.8rem", cursor: "pointer" }}>Cancel</button>
           <button onClick={handleDelete} disabled={deleting}
             style={{ background: deleting ? "#374151" : "#991b1b", border: "none", borderRadius: 6, padding: "8px 20px", color: "#fff", fontSize: "0.8rem", fontWeight: 700, cursor: deleting ? "not-allowed" : "pointer" }}>
             {deleting ? "Removing..." : "Yes, Remove"}
@@ -225,15 +225,15 @@ function DeleteConfirmModal({ asset, onClose, onDeleted }: { asset: Asset; onClo
   );
 }
 
-// ── Main Page ────────────────────────────────────────────────────────
+// -- Main Page --------------------------------------------------------
 export function AssetIntelligencePage() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [sortBy, setSortBy] = useState<keyof Asset>("priority");
-  const [sortAsc, setSortAsc] = useState(true);
+  const sortBy: keyof Asset = "priority";
+  const sortAsc = true;
   const [showAddModal, setShowAddModal] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Asset | null>(null);
   const [toast, setToast] = useState("");
@@ -268,19 +268,14 @@ export function AssetIntelligencePage() {
       return sortAsc ? (av > bv ? 1 : -1) : (av < bv ? 1 : -1);
     });
 
-  const toggleSort = (field: keyof Asset) => {
-    if (sortBy === field) setSortAsc(!sortAsc);
-    else { setSortBy(field); setSortAsc(true); }
-  };
-
   if (loading) return <div style={{ display: "flex", justifyContent: "center", marginTop: 80 }}><Spinner /></div>;
 
   return (
-    <div>
+    <div className="nx-page">
       {/* Toast notification */}
       {toast && (
         <div style={{ position: "fixed", top: 20, right: 20, background: "#052e16", border: "1px solid #16a34a", borderRadius: 8, padding: "10px 18px", color: "#4ade80", fontSize: "0.82rem", fontWeight: 600, zIndex: 2000, boxShadow: "0 8px 30px #0008" }}>
-          ✓ {toast}
+          ? {toast}
         </div>
       )}
 
@@ -308,7 +303,7 @@ export function AssetIntelligencePage() {
             <button
               onClick={() => setShowAddModal(true)}
               style={{ background: "#166534", border: "1px solid #16a34a", borderRadius: 6, padding: "7px 14px", color: "#4ade80", fontSize: "0.78rem", fontWeight: 700, cursor: "pointer" }}>
-              ➕ Add Asset
+              ? Add Asset
             </button>
           </div>
         }
@@ -319,17 +314,17 @@ export function AssetIntelligencePage() {
         <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap", alignItems: "center" }}>
           <input
             value={search} onChange={e => setSearch(e.target.value)} placeholder="Search asset ID, name, region..."
-            style={{ flex: "1 1 200px", background: "#111827", border: "1px solid #374151", borderRadius: 6, padding: "7px 12px", color: "#f3f4f6", fontSize: "0.8rem" }}
+            style={{ flex: "1 1 200px", background: "rgba(10,22,40,0.7)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 6, padding: "7px 12px", color: "#e2e8f0", fontSize: "0.8rem" }}
           />
           <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}
-            style={{ background: "#111827", border: "1px solid #374151", borderRadius: 6, padding: "7px 10px", color: "#f3f4f6", fontSize: "0.78rem" }}>
+            style={{ background: "rgba(10,22,40,0.7)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 6, padding: "7px 10px", color: "#e2e8f0", fontSize: "0.78rem" }}>
             <option value="">All Types</option>
             <option value="transformer">Transformer</option>
             <option value="substation">Substation</option>
             <option value="feeder">Feeder</option>
           </select>
           <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-            style={{ background: "#111827", border: "1px solid #374151", borderRadius: 6, padding: "7px 10px", color: "#f3f4f6", fontSize: "0.78rem" }}>
+            style={{ background: "rgba(10,22,40,0.7)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 6, padding: "7px 10px", color: "#e2e8f0", fontSize: "0.78rem" }}>
             <option value="">All Status</option>
             <option value="critical">Critical</option>
             <option value="warning">Warning</option>
@@ -341,14 +336,14 @@ export function AssetIntelligencePage() {
         {/* Quick filter pills */}
         <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
           {[
-            { label: "🚨 Critical", s: "critical", t: "" },
-            { label: "⚠ Warning", s: "warning", t: "" },
-            { label: "🔧 Transformers", s: "", t: "transformer" },
-            { label: "🏗 Substations", s: "", t: "substation" },
-            { label: "⚡ Feeders", s: "", t: "feeder" },
+            { label: "?? Critical", s: "critical", t: "" },
+            { label: "? Warning", s: "warning", t: "" },
+            { label: "?? Transformers", s: "", t: "transformer" },
+            { label: "?? Substations", s: "", t: "substation" },
+            { label: "? Feeders", s: "", t: "feeder" },
           ].map(f => (
             <button key={f.label} onClick={() => { setStatusFilter(f.s); setTypeFilter(f.t); }}
-              style={{ background: "#1f2937", border: "1px solid #374151", borderRadius: 20, padding: "3px 10px", color: "#9ca3af", fontSize: "0.7rem", cursor: "pointer" }}>
+              style={{ background: "rgba(30,41,59,0.7)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 20, padding: "3px 10px", color: "#64748b", fontSize: "0.7rem", cursor: "pointer" }}>
               {f.label}
             </button>
           ))}
@@ -358,10 +353,10 @@ export function AssetIntelligencePage() {
           <Table headers={["#", "Asset", "Type", "Region", "Health", "Failure Risk", "Impact", "Customers", "Status", "Actions"]}>
             {filtered.map(a => (
               <TR key={a.id}>
-                <TD><span style={{ fontWeight: 700, color: "#6b7280", fontSize: "0.72rem" }}>#{a.priority}</span></TD>
+                <TD><span style={{ fontWeight: 700, color: "#475569", fontSize: "0.72rem" }}>#{a.priority}</span></TD>
                 <TD>
-                  <div style={{ fontWeight: 700, color: "#f3f4f6", fontSize: "0.82rem" }}>{a.name}</div>
-                  <div style={{ fontSize: "0.68rem", color: "#6b7280" }}>{a.id} · {a.substation}</div>
+                  <div style={{ fontWeight: 700, color: "#e2e8f0", fontSize: "0.82rem" }}>{a.name}</div>
+                  <div style={{ fontSize: "0.68rem", color: "#475569" }}>{a.id} � {a.substation}</div>
                 </TD>
                 <TD muted><span style={{ textTransform: "capitalize" }}>{a.type}</span></TD>
                 <TD muted>{a.region}</TD>
@@ -381,7 +376,7 @@ export function AssetIntelligencePage() {
                 <TD>
                   <div style={{ display: "flex", gap: 4 }}>
                     <Link to={`/assets/${a.id}`}
-                      style={{ background: "#1e3a5f", color: "#60a5fa", border: "none", borderRadius: 4, padding: "3px 8px", fontSize: "0.68rem", fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>
+                      style={{ background: "#1e3a5f", color: "#38bdf8", border: "none", borderRadius: 4, padding: "3px 8px", fontSize: "0.68rem", fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>
                       Detail
                     </Link>
                     <Link to={`/advisor?asset=${a.id}`}
@@ -392,7 +387,7 @@ export function AssetIntelligencePage() {
                       onClick={() => setDeleteTarget(a)}
                       style={{ background: "#450a0a", color: "#f87171", border: "1px solid #7f1d1d", borderRadius: 4, padding: "3px 8px", fontSize: "0.68rem", fontWeight: 600, cursor: "pointer" }}
                       title="Remove asset">
-                      🗑
+                      ??
                     </button>
                   </div>
                 </TD>
@@ -402,9 +397,9 @@ export function AssetIntelligencePage() {
         )}
 
         {/* Footer summary */}
-        <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid #1f2937", display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "#4b5563" }}>
-          <span>{assets.length} total assets · {assets.filter(a=>a.status==="critical").length} critical · {assets.filter(a=>a.status==="warning").length} warning</span>
-          <span>Click ➕ Add Asset to add a new asset · 🗑 to remove</span>
+        <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid #1f2937", display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "#334155" }}>
+          <span>{assets.length} total assets � {assets.filter(a=>a.status==="critical").length} critical � {assets.filter(a=>a.status==="warning").length} warning</span>
+          <span>Click ? Add Asset to add a new asset � ?? to remove</span>
         </div>
       </Panel>
     </div>
